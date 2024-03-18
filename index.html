@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Number Matrix</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="selectedCountContainer">Selected Count: <span id="selectedCount">0</span></div>
+    <table id="numberMatrix"></table>
+    <button id="printButton">Print Numbers</button>
+    <div id="myModal" class="modal">
+        <div class="modal-content" id="modalContent">
+            <!-- Modal content will be inserted here -->
+        </div>
+        <button onclick="hideModal()">Close</button>
+    </div>
+    
+    <script>
+        const matrixSize = 10;
+        const varList = [];
+        const table = document.getElementById('numberMatrix');
+
+        for (let i = 0; i < matrixSize; i++) {
+            const row = table.insertRow(i);
+            for (let j = 0; j < matrixSize; j++) {
+                const cell = row.insertCell(j);
+                const number = i * matrixSize + j;
+                cell.innerHTML = number;
+                cell.classList.add('green');
+
+                cell.onclick = function() {
+                    if (cell.classList.contains('green')) {
+                        cell.classList.remove('green');
+                        cell.classList.add('red');
+                        varList.push(number);
+                    } else {
+                        cell.classList.remove('red');
+                        cell.classList.add('green');
+                        const index = varList.indexOf(number);
+                        if (index > -1) {
+                            varList.splice(index, 1);
+                        }
+                    }
+                    document.getElementById('selectedCount').innerText = varList.length;
+                };
+            }
+        }
+
+        document.getElementById('printButton').onclick = function() {
+            let randomizedList = [...varList].sort(() => Math.random() - 0.5);
+            let outputString = randomizedList.map((number, index) => `#${index + 1} = ${number}`).join('\n');
+            alert(outputString);
+        };
+    </script>
+</body>
+</html>
